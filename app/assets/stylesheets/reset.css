@@ -1,0 +1,46 @@
+html {
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+}
+
+body, nav, ul, li, div, span, h1, h2, h3, h4, h5, h6,
+  article, section, a, input, button, img, form, textarea {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  box-shadow: 0;
+  box-sizing: border-box;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+img {
+  display: block;
+  height: inherit;
+  width: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav {
+  height: 56px;
+}
+
+main {
+  margin-top: 56px;
+}
+
+::placeholder {
+  color: inherit;
+  opacity: 0.6;
+}

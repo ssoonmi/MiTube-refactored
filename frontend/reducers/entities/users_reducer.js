@@ -1,0 +1,36 @@
+import { LOGIN, LOGOUT } from '../../actions/session_actions';
+import { RECEIVE_OWN_CHANNEL, RECEIVE_USER_CHANNELS } from '../../actions/channel_actions';
+import { RECEIVE_USER } from '../../actions/user_actions';
+
+const defaultState = {};
+
+export default function UsersReducer(state=defaultState, action) {
+  let newState;
+  let channelIds;
+  let channel;
+  switch (action.type) {
+    case RECEIVE_USER: 
+      newState = Object.assign({}, state);
+      newState[action.user.id] = action.user;
+      return newState;
+    case RECEIVE_OWN_CHANNEL:
+    case RECEIVE_USER_CHANNELS:
+      newState = Object.assign({}, state);
+      action.payload.channels.forEach((channel) => {
+        channelIds = newState[channel.user_id].channelIds || new Set();
+        channelIds.add(channel.id);
+        newState[channel.user_id].channelIds = channelIds;
+      });
+      return newState;
+    case LOGIN:
+      newState = Object.assign({}, state);
+      newState[action.id] = action.user;
+      return newState;
+    case LOGOUT:
+      newState = Object.assign({}, state);
+      delete newState[action.id];
+      return newState;
+    default:
+      return state;
+  }
+}
