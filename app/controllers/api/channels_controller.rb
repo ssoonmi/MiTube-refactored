@@ -1,7 +1,7 @@
 class Api::ChannelsController < ApplicationController
   def index
     if params[:user_id]
-      @channels = current_user.channels.include_all
+      @channels = Channel.include_all.where('channels.id = ?', params[:user_id])
     else
       @channels = Channel.include_all
       @videos = Video.include_all

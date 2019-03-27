@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Modal from '../modal/modal';
 import ProfileDropdown from './dropdowns/profile_dropdown';
 import DarkModeDropdown from './dropdowns/dark_mode_dropdown';
@@ -9,6 +9,10 @@ import { connect } from 'react-redux';
 function NavDropdown({ setDropdown, initialMode }) {
   const [mode, setMode] = useState(initialMode);
 
+  useEffect(() => {
+    setMode(initialMode);
+  }, [initialMode]);
+
   let dropdownMenu;
 
   switch (mode) {
@@ -16,7 +20,7 @@ function NavDropdown({ setDropdown, initialMode }) {
       dropdownMenu = (<DotDropdown setMode={setMode} />);
       break;
     case "profile":
-      dropdownMenu = (<ProfileDropdown setMode={setMode} />);
+      dropdownMenu = (<ProfileDropdown setMode={setMode} toggleDropdown={setDropdown} />);
       break;
     case "darkMode":
       dropdownMenu = (<DarkModeDropdown setMode={setMode} initialMode={initialMode} />);

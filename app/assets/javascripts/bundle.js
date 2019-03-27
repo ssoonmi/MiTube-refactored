@@ -264,9 +264,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
 var LOGIN = "LOGIN";
 var LOGOUT = "LOGOUT";
-var logout = function logout(dispatch) {
-  return function () {
-    console.log('logging out');
+var logout = function logout() {
+  return function (dispatch) {
+    document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    dispatch({
+      type: LOGOUT
+    });
   };
 };
 
@@ -1388,7 +1391,8 @@ function ProfileDropdown(_ref) {
   var id = _ref.id,
       user = _ref.user,
       logout = _ref.logout,
-      setMode = _ref.setMode;
+      setMode = _ref.setMode,
+      toggleDropdown = _ref.toggleDropdown;
   var theme = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_context_theme_context__WEBPACK_IMPORTED_MODULE_4__["ThemeContext"]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_nav_styled_components__WEBPACK_IMPORTED_MODULE_5__["Dropdown"], {
     theme: theme
@@ -1396,7 +1400,10 @@ function ProfileDropdown(_ref) {
     size: "40px",
     id: id
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, user.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, user.email))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    onClick: logout
+    onClick: function onClick(e) {
+      toggleDropdown(e);
+      logout();
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Sign Out"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
     onClick: function onClick() {
       return setMode("darkMode");
@@ -1769,6 +1776,9 @@ function NavDropdown(_ref) {
       mode = _useState2[0],
       setMode = _useState2[1];
 
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    setMode(initialMode);
+  }, [initialMode]);
   var dropdownMenu;
 
   switch (mode) {
@@ -1780,7 +1790,8 @@ function NavDropdown(_ref) {
 
     case "profile":
       dropdownMenu = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_dropdowns_profile_dropdown__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        setMode: setMode
+        setMode: setMode,
+        toggleDropdown: setDropdown
       });
       break;
 

@@ -5,7 +5,7 @@ import ProfileButton from '../../util/profile_button';
 import { ThemeContext } from '../../../context/theme_context';
 import { Dropdown } from '../nav_styled_components';
 
-function ProfileDropdown({ id, user, logout, setMode }) {
+function ProfileDropdown({ id, user, logout, setMode, toggleDropdown }) {
   const theme = useContext(ThemeContext);
 
   return (
@@ -18,7 +18,13 @@ function ProfileDropdown({ id, user, logout, setMode }) {
         </div>
       </div>
       <section>
-        <li onClick={logout}><span>Sign Out</span></li>
+        <li 
+          onClick={(e) => {
+            toggleDropdown(e);
+            logout();
+          }}>
+          <span>Sign Out</span>
+        </li>
       </section>
       <section>
         <li onClick={() => setMode("darkMode")}>
