@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { ThemeContext } from '../../context/theme_context';
 import styled from 'styled-components';
@@ -15,11 +15,10 @@ const ChannelPage = styled.article.attrs(({ theme, mainWidth }) => ({
 
   .main {
     background-color: ${props => props.backgroundColor};
-    height: 200vh;
+    overflow: auto;
 
     > div {
       margin: 0 auto;
-      overflow: auto;
       width: ${props => props.mainWidth};
     }
   }
@@ -29,22 +28,22 @@ const ChannelPage = styled.article.attrs(({ theme, mainWidth }) => ({
 function ChannelShow({ channelId, channel, fetchChannel }) {
   const theme = useContext(ThemeContext);
   const mainWidth = useContext(WidthContext);
+  let headerRef = useRef(null);
+  const [switchChannel, setSwitchChannel] = useState(true);
 
   useEffect(() => {
+    setSwitchChannel(true);
     fetchChannel(channelId);
+    setTimeout(() => setSwitchChannel(false), 300);
   }, [channelId]);
 
   return (
     <ChannelPage theme={theme} mainWidth={mainWidth}>
-      <Loader loading={!channel} marginTop={"30vh"} />
-      {channel ? (
+      <Loader loading={!channel || switchChannel} marginTop={"30vh"} />
+      {(channel && !switchChannel) ? (
         <>
-          <ChannelHeader channel={channel}/>
-          <section className="main">
-            <div>
-              <ChannelShowRoutes channel={channel}/>
-            </div>
-          </section>
+          <ChannelHeader channel={channel} headerRef={headerRef} setHeaderRef={headerRef}/>
+          <ChannelShowRoutes channel={channel} headerRef={headerRef} />
         </>
       ) : null}
     </ChannelPage>

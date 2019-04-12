@@ -65,7 +65,7 @@ function determineWidth(target, path) {
   }
 }
 
-function ChannelHeaderLinks({ channel, match }) {
+function ChannelHeaderLinks({ channel, match, headerRef }) {
   const theme = useContext(ThemeContext);
 
   const [lastPath, setLastPath] = useState(determineWidth('lastPath', `/channels/${channel.id}`));
@@ -81,7 +81,7 @@ function ChannelHeaderLinks({ channel, match }) {
   }, [match]);
 
   return (
-    <Links theme={theme}>
+    <Links theme={theme} ref={headerRef}>
       <li>
         <NavLink exact to={`/channels/${channel.id}/`}>
           Home

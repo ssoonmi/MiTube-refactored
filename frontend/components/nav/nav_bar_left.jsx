@@ -30,9 +30,7 @@ const LeftSection = styled.ul`
   }
 `;
 
-export default function NavBarLeft({ onSideNav, toggleSideNav }) {
-  const theme = useContext(ThemeContext);
-
+export default function NavBarLeft({ onSideNav, toggleSideNav, theme }) {
   return (
     <LeftSection>
       <div onClick={toggleSideNav}>

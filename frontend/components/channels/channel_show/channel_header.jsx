@@ -9,12 +9,14 @@ const Header = styled.section.attrs(({ theme }) => ({
   backgroundColor: theme.html
 }))`
   position: sticky;
+  z-index: 100;
 
   .splash {
     position: relative;
     height: calc(100vw / 6.2 - 1px);
     width: 100%;
     overflow: hidden;
+   
 
     div {
       width: 100%;
@@ -62,10 +64,9 @@ const Header = styled.section.attrs(({ theme }) => ({
   }
 `;
 
-function ChannelHeader({ channel }) {
+function ChannelHeader({ channel, headerRef, setHeaderRef }) {
   const theme = useContext(ThemeContext);
   const [headerTop, setHeaderTop] = useState(0);
-  const headerRef = useRef(null);
 
   const resizeHeaderTop = () => {
     setHeaderTop(-headerRef.current.offsetHeight + 47 + 56);
@@ -89,7 +90,7 @@ function ChannelHeader({ channel }) {
   }, []);
 
   return (
-    <Header theme={theme} ref={headerRef} style={{top: headerTop}}>
+    <Header theme={theme} style={{ top: headerTop }} ref={setHeaderRef} >
       {channel.splash ? <Splash channel={channel} /> : null}
       <div className="header">
         <div className="info">
@@ -107,7 +108,7 @@ function ChannelHeader({ channel }) {
           <SubscribeButton channel={channel} />
         </div>
       </div>
-      <ChannelHeaderLinks channel={channel} />
+      <ChannelHeaderLinks channel={channel}/>
     </Header>
   );
 }

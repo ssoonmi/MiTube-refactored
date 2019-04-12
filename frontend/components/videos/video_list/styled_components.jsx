@@ -4,7 +4,8 @@ export const List = styled.div.attrs(({ theme }) => ({
   border: theme.videoListBorder
 }))`
   border-bottom: 1px solid ${props => props.border};
-  overflow: auto;
+  position: relative;
+  z-index: 1;
 
   &:last-of-type {
     border-bottom: 0px;
@@ -16,6 +17,7 @@ export const Header = styled.div.attrs(({ theme }) => ({
 }))`
   margin-top: 24px;
   height: fit-content;
+  overflow: hidden;
 
   > div {
     height: 20px;

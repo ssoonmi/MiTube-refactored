@@ -36,6 +36,8 @@ class Comment < ApplicationRecord
   end
 
   def self.include_all
-    include_like_counts.include_dislike_counts
+    includes(:user)
+      .include_like_counts
+      .include_dislike_counts
   end
 end

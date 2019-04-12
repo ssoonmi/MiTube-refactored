@@ -18,4 +18,8 @@ class Playlist < ApplicationRecord
   has_many :videos,
     through: :playlist_videos,
     source: :video
+
+  def self.include_all
+    includes(:videos)
+  end
 end

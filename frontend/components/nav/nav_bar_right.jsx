@@ -7,9 +7,10 @@ import ProfileButton from '../util/profile_button';
 import NavDropdown from './nav_dropdown';
 import { ThemeContext } from '../../context/theme_context';
 
-const RightSection = styled.ul.attrs(({ theme }) => ({
+const RightSection = styled.ul.attrs(({ theme, actualTheme }) => ({
     blue: theme.blue,
     plusColor: theme.name == 'light' ? 'white' : '#525252',
+    resetColor: actualTheme.color
 }))`
   display: flex;
   align-items: center;
@@ -46,13 +47,17 @@ const RightSection = styled.ul.attrs(({ theme }) => ({
     justify-content: center;
     position: relative;
     font-size: 1rem;
+
+    ul {
+      color: ${props => props.resetColor};
+    }
   }
 
 `;
 
-function NavBarRight({ id, loggedIn }) {
+function NavBarRight({ id, loggedIn, theme }) {
+  const actualTheme = useContext(ThemeContext);
   const [dropdown, setDropdown] = useState(false);
-  const theme = useContext(ThemeContext);
 
   const toggleDropdown = function(e) {
     e.stopPropagation();
@@ -61,7 +66,9 @@ function NavBarRight({ id, loggedIn }) {
 
   if (loggedIn) {
     return (
-      <RightSection theme={theme}>
+      <RightSection 
+        theme={theme}
+        actualTheme={actualTheme}>
         <Link to="/videos/new">
           <NavIcon>
             <i className="fas fa-video">
@@ -82,7 +89,9 @@ function NavBarRight({ id, loggedIn }) {
     );
   } else {
     return (
-      <RightSection theme={theme}>
+      <RightSection 
+        theme={theme}
+        actualTheme={actualTheme}>
         <Link to="/videos/new">
           <NavIcon>
             <i className="fas fa-video">

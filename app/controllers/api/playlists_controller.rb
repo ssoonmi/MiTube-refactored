@@ -11,13 +11,22 @@ class Api::PlaylistsController < ApplicationController
       render :index
     end
   end
+
+  def show
+    @playlist = Playlist.include_all.find_by(id: params[:id])
+    if @playlist.present? 
+      render :show
+    else
+      render json: ['Could not find playlist'], status: 404
+    end
+  end
   
   def create
     if params[:channel_id] # channel playlist
       @channel = Channel.find_by(id: params[:channel_id])
       if @channel
         if current_user.id == @channel.id
-          @playlist = current_user.playlists.create(playlist_params)
+          @playlist = current_user.playlists.new(playlist_params)
         else
           render json: ["Unauthorized"], status: 401
         end
@@ -25,38 +34,48 @@ class Api::PlaylistsController < ApplicationController
         render json: ["Could not find channel"], status: 404
       end
     else # user playlist
-      @playlist = current_user.playlists.create(playlist_params)
+      @playlist = current_user.playlists.new(playlist_params)
     end
 
     if @playlist && @playlist.save
       render json: @playlist
     elsif @playlist
-      render json: @playlist.errors.full_messages, status: 400
+      render json: @playlist.errors, status: 400
     end
   end
 
-  def add_video
-    if Playlist
-        .videos
-        .where("playlists.id = ?", params[:playlist_id])
-        .where("videos.id = ?", params[:video_id])
-        .present?
-      render json: ["Playlist already contains video"], status: 400
-    else
-      @playlist_video = Playlist.playlist_videos.create(playlist_videos_params)
-      if @playlist_video.save
-        render json: {video_id: params[:video_id], playlist_id: params[:playlist_id]}
-      else
-        render json: ["Unable to save video to playlist"], status: 400
+  def update
+    @playlist = Playlist.find_by(id: params[:id])
+    if @playlist.present?
+      if (@playlist.ownable_type == 'Channel' && 
+        current_user.channels.find_by(id: @playlist.ownable_id).present?) ||
+        (@playlist.ownable_type == 'User' && 
+        @playlist.ownable_id == current_user.id)
+          @playlist.update(playlist_params)
+          if @playlist.save
+            render json: @playlist
+          else
+            render json: @playlist.errors, status: 400
+          end
+      else 
+        render json: ['Not authorized to update playlist'], status: 422
       end
+    else
+      render json: ['Could not find playlist'], status: 404
     end
   end
 
-  def delete_video
-    @playlist_video = Playlist
-        .videos
-        .where("playlists.id = ?", params[:playlist_id])
-        .where("videos.id = ?", params[:video_id])
+  def add
+    @playlist_video = PlaylistVideo.new(playlist_videos_params)
+    if @playlist_video.save
+      render json: {video_id: params[:video_id], playlist_id: params[:playlist_id]}
+    else
+      render json: ["Unable to save video to playlist"], status: 400
+    end
+  end
+
+  def delete
+    @playlist_video = PlaylistVideo.find_by(playlist_video_params)
     if @playlist_video.present?
       if @playlist_video.destroy
         render json: {video_id: params[:video_id], playlist_id: params[:playlist_id]}

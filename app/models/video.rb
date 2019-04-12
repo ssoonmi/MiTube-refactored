@@ -77,9 +77,23 @@ class Video < ApplicationRecord
     ).select("videos.*, COALESCE(views.num_views, 0) AS num_views")
   end
 
+  def self.include_num_comments
+    # WHERE inner_views.video_id IN (#{ids.join(', ')})
+    joins(
+    %{
+      LEFT OUTER JOIN (
+        SELECT inner_comments.video_id, COUNT(*) num_comments
+        FROM   comments inner_comments
+        GROUP BY inner_comments.video_id
+      ) comments ON comments.video_id = videos.id
+    }
+    ).select("videos.*, COALESCE(comments.num_comments, 0) AS num_comments")
+  end
+
   def self.include_all
     includes(video_attachment: :blob, thumbnail_attachment: :blob)
       .include_num_views
+      .include_num_comments
       .include_like_counts
       .include_dislike_counts
   end

@@ -3,6 +3,10 @@ html {
   font-family: Roboto, sans-serif;
 }
 
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 body, nav, ul, li, div, span, h1, h2, h3, h4, h5, h6,
   article, section, a, input, button, img, form, textarea {
   margin: 0;

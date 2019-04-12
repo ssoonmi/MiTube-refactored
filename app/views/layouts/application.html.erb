@@ -7,16 +7,10 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script>
       <% if logged_in? %>
-        window.currentUser = {
-          id: <%= current_user.id %>,
-          name: "<%= current_user.name %>",
-          email: "<%= current_user.email %>",
-          image: "<%= current_user.image %>"
-        };
+        window.currentUser = <%= raw render partial: 'api/users/user.json.jbuilder', locals: {user: current_user} %>;
       <% end %>
       window.logo = "<%= image_url('MiTube-logo.png') %>";
       window.logoDark = "<%= image_url('MiTube-logo-dark.png') %>";

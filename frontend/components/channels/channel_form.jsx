@@ -20,8 +20,12 @@ export default function ChannelForm({
     const formData = new FormData();
     formData.append("channel[name]", name);
     formData.append("channel[description]", description);
-    formData.append("channel[splash]", splash);
-    formData.append("channel[icon]", icon);
+    if (splash) {
+      formData.append("channel[splash]", splash);
+    }
+    if (icon) {
+      formData.append("channel[icon]", icon);
+    }
 
     setDisabled(true);
     submitAction(formData).then(() => {

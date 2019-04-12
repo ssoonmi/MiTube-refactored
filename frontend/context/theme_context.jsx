@@ -12,11 +12,13 @@ export const themes = {
     menuItemHoverBackground: 'rgba(0, 0, 0, 0.1)',
     searchButtonBorder: '#d3d3d3',
     searchButtonBackground: '#f8f8f8',
-    modal: 'black',
+    modal: 'rgba(0, 0, 0, 0.5)',
     blue: '#065fd4',
     name: 'light',
     smallLink: 'rgb(96, 96, 96)',
-    videoListBorder: 'rgba(0, 0, 0, 0.1)'
+    videoListBorder: 'rgba(0, 0, 0, 0.1)',
+    iconColor: '#909090',
+    iconBackground: 'white',
   },
   dark: {
     html: "#131313",
@@ -28,11 +30,13 @@ export const themes = {
     menuItemHoverBackground: 'rgba(255, 255, 255, 0.1)',
     searchButtonBackground: 'hsla(0, 0%, 100%, 0.08)',
     searchButtonBorder: 'hsla(0, 0%, 100%, 0.09)',
-    modal: 'black',
+    modal: 'rgba(0, 0, 0, 0.5)',
     blue: '#3ea6ff',
     name: 'dark',
     smallLink: 'rgba(255, 255, 255, 0.74)',
-    videoListBorder: 'rgba(255, 255, 255, 0.1)'
+    videoListBorder: 'rgba(255, 255, 255, 0.1)',
+    iconColor: '#909090',
+    iconBackground: '#242424',
   },
 };
 

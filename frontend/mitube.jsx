@@ -30,8 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 }); 
 
+import { createChannel } from './actions/channel_actions';
+import { createVideo } from './actions/video_actions';
+
 function developmentAccess(store) {
+
   window.store = store;
   window.state = store.getState();
   window.dispatch = store.dispatch;
+  window.createChannel = createChannel;
+  window.createVideo = createVideo;
 }

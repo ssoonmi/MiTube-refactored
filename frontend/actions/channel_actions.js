@@ -3,7 +3,9 @@ import ajax from './ajax';
 export const RECEIVE_OWN_CHANNEL = "RECEIVE_OWN_CHANNEL";
 export const RECEIVE_USER_CHANNELS = "RECEIVE_OWN_CHANNELS";
 export const RECEIVE_CHANNEL = "RECEIVE_CHANNEL";
+export const RECEIVE_CREATE_CHANNEL = "RECEIVE_CREATE_CHANNEL";
 export const RECEIVE_CHANNELS = "RECEIVE_CHANNELS";
+export const RECEIVE_CHANNEL_FORM_ERRORS = "RECEIVE_CHANNEL_FORM_ERRORS";
 
 function receiveOwnChannel(payload) {
   return {
@@ -15,6 +17,13 @@ function receiveOwnChannel(payload) {
 function receiveChannel(payload) {
   return {
     type: RECEIVE_CHANNEL,
+    payload
+  };
+}
+
+function receiveCreateChannel(payload) {
+  return {
+    type: RECEIVE_CREATE_CHANNEL,
     payload
   };
 }
@@ -34,12 +43,20 @@ function receiveUserChannels(payload, userId) {
   };
 }
 
+function receiveChannelFormErrors(response) {
+  return {
+    type: RECEIVE_CHANNEL_FORM_ERRORS,
+    response
+  };
+}
+
 export const createChannel = (channel) => (dispatch) => {
   return ajax({
     method: "POST",
     url: "/api/channels",
     data: channel,
-    success: (payload) => dispatch(receiveOwnChannel(payload))
+    success: (payload) => dispatch(receiveCreateChannel(payload)),
+    error: (response) => dispatch(receiveChannelFormErrors(response))
   });
 };
 

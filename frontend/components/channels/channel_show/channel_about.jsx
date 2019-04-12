@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../../context/theme_context';
 
@@ -48,6 +48,11 @@ const Container = styled.div.attrs(({ theme }) => ({
 
 function ChannelAbout({ channel }) {
   const theme = useContext(ThemeContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Container theme={theme}>

@@ -51,8 +51,7 @@ const NavSearch = styled.form.attrs(({ theme }) => ({
   }
 `;
 
-export default function NavBarSearch() {
-  const theme = useContext(ThemeContext);
+export default function NavBarSearch({ theme }) {
   return (
     <NavSearch theme={theme}>
       <input type="text" placeholder="Search" />

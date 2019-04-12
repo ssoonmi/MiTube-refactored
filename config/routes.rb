@@ -22,11 +22,14 @@ Rails.application.routes.draw do
       resources :videos, only: [:create, :index]
     end
 
-    resources :videos, only: [:index, :show, :destroy, :update] do
+    resources :videos, only: [:show, :destroy, :update] do
+      collection do
+        get :search, to: 'searches#search_query', as: 'search'
+      end
       resources :comments, only: [:create, :index]
       member do
-        post :upvote, to: 'videos#upvote', as: 'upvote'
-        post :downvote, to: 'videos#downvote', as: 'downvote'
+        post :uplike, to: 'videos#uplike', as: 'uplike'
+        post :downlike, to: 'videos#downlike', as: 'downlike'
         delete :unlike, to: 'videos#unlike', as: 'unlike'
         post :view, to: 'videos#view', as: 'view'
       end
@@ -34,18 +37,16 @@ Rails.application.routes.draw do
 
     resources :comments, only: [:update, :destroy] do
       member do
-        post :upvote, to: 'comments#upvote', as: 'upvote'
-        post :downvote, to: 'comments#downvote', as: 'downvote'
+        post :uplike, to: 'comments#uplike', as: 'uplike'
+        post :downlike, to: 'comments#downlike', as: 'downlike'
         delete :unlike, to: 'comments#unlike', as: 'unlike'
       end
     end
 
-    resources :playlists, only: [:destroy, :create, :index] do
-      resources :videos, only: [:index] do
-        member do
-          post :add, to: 'playlists#add_video', as: 'add_video'
-          delete :delete, to: 'playlists#delete_video', as: 'delete_video'
-        end
+    resources :playlists, only: [:destroy, :create, :index, :show] do
+      resources :videos, only: [] do
+        post :add, to: 'playlists#add_video', as: 'add_video'
+        delete :delete, to: 'playlists#delete_video', as: 'delete_video'
       end
     end
   end

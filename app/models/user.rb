@@ -40,6 +40,14 @@ class User < ApplicationRecord
   has_many :videos,
     through: :channels,
     source: :videos
+  has_many :liked_comments,
+    through: :likes,
+    source: :likeable,
+    source_type: 'Comment'
+  has_many :liked_videos,
+    through: :likes,
+    source: :likeable,
+    source_type: 'Video'
 
   def self.from_omniauth(auth)
     # Creates a new user only if it doesn't exist

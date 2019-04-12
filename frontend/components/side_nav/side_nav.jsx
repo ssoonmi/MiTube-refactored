@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
+import { connect } from 'react-redux';
 import Modal from '../modal/modal';
 import NavBarLeft from '../nav/nav_bar_left';
 import { ThemeContext } from '../../context/theme_context';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const Nav = styled.nav.attrs(({ theme, show, mode }) => ({
+const Nav = styled.nav.attrs(({ theme, show, modal }) => ({
   headerBackgroundColor: theme.background,
   backgroundColor: theme.menuBackground,
   menuItemHoverBackground: theme.menuItemHoverBackground,
   show,
-  modal: (mode == 'modal')
+  modal
 }))`
   z-index: 1000;
   display: flex;
@@ -61,11 +62,14 @@ function SideNav({ show, mode, toggleSideNav }) {
 
   return (
     <> 
-      {show && mode == 'modal' ? 
+      {show && (mode == 'modal') ? 
         <Modal backgroundColor={theme.modal} clickListener={toggleSideNav}/> 
         : null}
-      <Nav id="side-nav" theme={theme} show={show} mode={mode}>
-        <NavBarLeft onSideNav={true} toggleSideNav={toggleSideNav} />
+      <Nav id="side-nav" theme={theme} show={show} modal={mode == 'modal'}>
+        <NavBarLeft 
+          theme={theme}
+          onSideNav={true} 
+          toggleSideNav={toggleSideNav} />
         <ul>
           <section>
             <Link to="/" onClick={toggleSideNav}>

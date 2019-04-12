@@ -8,6 +8,8 @@
 #
 
 class PlaylistVideo < ApplicationRecord
+  validates :playlist_id, uniqueness: { scope: :video_id }
+
   belongs_to :playlist
   belongs_to :video
 end

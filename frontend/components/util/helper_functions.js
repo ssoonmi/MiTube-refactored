@@ -21,3 +21,9 @@ export const timeAgo = (time) => {
   const renderPlural = renderNumber == 1 ? "" : "s";
   return renderNumber + renderAgo + renderPlural + " ago";
 };
+
+export const elementsFromIds = (state, ids) => {
+  return ids.map((id) => {
+    return state[id];
+  });
+};

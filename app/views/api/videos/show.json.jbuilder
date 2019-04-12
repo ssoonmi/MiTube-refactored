@@ -1,8 +1,3 @@
-json.video do
-  json.partial! 'api/videos/video', video: @video
-  json.commentIds @comments.ids if @comments.present?
-end
-
 json.channels do
   json.array! [@channel] do
     json.partial! 'api/channels/channel', channel: @channel
@@ -18,4 +13,8 @@ if @comments.present?
       end
     end
   end
+end
+
+json.video do
+  json.partial! 'api/videos/video', video: @video
 end

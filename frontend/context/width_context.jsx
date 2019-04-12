@@ -5,12 +5,12 @@ const mediaQuery = (showNormalSideNav) => {
   if (showNormalSideNav) {
     width -= 230;
   }
-  if (width > 1090) {
-    return "1086px";
-  } else if (width > 876) {
-    return "870px";
-  } else if (width > 662) {
-    return "656px";
+  if (width > 1122) {
+    return "1070px";
+  } else if (width > 908) {
+    return "856px";
+  } else if (width > 694) {
+    return "642px";
   } else {
     return "428px";
   }
@@ -21,9 +21,11 @@ export const WidthContext = React.createContext();
 function WidthProvider({ children, showNormalSideNav }) {
   const [width, setWidth] = useState(mediaQuery(showNormalSideNav));
 
-  window.addEventListener('resize', () => {
-    setWidth(mediaQuery(showNormalSideNav));
-  });
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setWidth(mediaQuery(showNormalSideNav));
+    });
+  }, []);
 
   useEffect(() => {
     setWidth(mediaQuery(showNormalSideNav));

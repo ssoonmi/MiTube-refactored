@@ -11,7 +11,7 @@ function ProfileDropdown({ id, user, logout, setMode, toggleDropdown }) {
   return (
     <Dropdown theme={theme}>
       <div>
-        <ProfileButton size={"40px"} id={id} />
+        <ProfileButton size={"40px"} image={user.image}/>
         <div>
           <div>{user.name}</div>
           <div>{user.email}</div>

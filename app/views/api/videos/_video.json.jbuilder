@@ -4,3 +4,4 @@ json.video polymorphic_url(video.video) if video.video.attached?
 json.numLikes video.like_count
 json.numDislikes video.dislike_count
 json.numViews video.num_views
+json.numComments video.num_comments

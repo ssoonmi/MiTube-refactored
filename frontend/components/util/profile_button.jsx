@@ -22,8 +22,16 @@ function ProfileButton({ image, size }) {
 }
 
 const msp = (state, ownProps) => {
+  let image = "https://s.ytimg.com/yts/img/avatar_48-vfllY0UTT.png";
+  if (ownProps.image) {
+    image = ownProps.image;
+  } else if (ownProps.id) {
+    image = state.entities.users[ownProps.id].image;
+  } else if (state.session.id) {
+    image = state.entities.users[state.session.id].image
+  }
   return {
-    image: state.entities.users[ownProps.id].image
+    image
   };
 };
 

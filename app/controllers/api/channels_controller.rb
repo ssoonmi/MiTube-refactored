@@ -1,11 +1,15 @@
 class Api::ChannelsController < ApplicationController
   def index
     if params[:user_id]
-      @channels = Channel.include_all.where('channels.id = ?', params[:user_id])
+      @channels = Channel
+        .include_all
+        .where('channels.user_id = ?', params[:user_id])
     else
       @channels = Channel.include_all
+        .limit(params[:limit] || 20)
+        .offset(params[:offset] || 0)
       @videos = Video.include_all
-                  .limit_by_channel_ids(@channels.ids, 2)
+        .limit_by_channel_ids(@channels.ids, 6)
     end
     render :index
   end
@@ -16,7 +20,10 @@ class Api::ChannelsController < ApplicationController
     @channel = Channel.include_all
                   .find(params[:id])
     if @channel
-      @videos = @channel.videos.include_all
+      @videos = @channel.videos
+        .include_all
+        .limit(params[:limit] || 20)
+        .offset(params[:offset] || 0)
       # @videos = @channel.videos.with_attached_video.with_attached_thumbnail
       render :show
     else 
@@ -31,9 +38,10 @@ class Api::ChannelsController < ApplicationController
     @channel.splash.attach(splash) if splash && splash != ''
     @channel.icon.attach(icon) if icon && icon != ''
     if @channel.save
+      @channel = Channel.include_all.find_by(id: @channel.id)
       render :show
     else
-      render json: @channel.errors.full_messages, status: 400
+      render json: @channel.errors, status: 400
     end
   end
 
@@ -48,7 +56,7 @@ class Api::ChannelsController < ApplicationController
       if @channel.save
         render json: @channel
       else
-        render json: @channel.errors.full_messages, status: 400
+        render json: @channel.errors, status: 400
       end
     else
       render json: ['Could not find channel'], status: 404
@@ -65,20 +73,18 @@ class Api::ChannelsController < ApplicationController
   end
 
   def subscribe
-    @subscription = current_user.subscriptions
-                      .new(channel_id: params[:channel_id])
+    @subscription = current_user.subscriptions.new(channel_id: params[:id])
     if @subscription.save
-      render json: {channelId: @subscription.channel_id}
+      render json: { channelId: @subscription.channel_id }
     else
       render json: @subscription.errors.full_messages, status: 400
     end
   end
 
   def unsubscribe
-    @subscription = current_user.subscriptions
-                      .where(channel_id: params[:channel_id])
+    @subscription = current_user.subscriptions.find_by(channel_id: params[:id])
     if @subscription.destroy
-      render json: {channelId: @subscription.channel_id}
+      render json: { channelId: @subscription.channel_id }
     else
       render json: @subscription.errors.full_messages, status: 400
     end
